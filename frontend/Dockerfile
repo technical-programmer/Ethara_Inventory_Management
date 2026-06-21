@@ -1,4 +1,3 @@
-
 FROM node:18-alpine AS builder
 
 WORKDIR /app
@@ -8,9 +7,8 @@ RUN npm ci
 
 COPY . .
 
-
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 RUN npm run build
 
@@ -18,7 +16,6 @@ RUN npm run build
 FROM nginx:1.25-alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-
 
 RUN echo 'server { \
     listen 3000; \
